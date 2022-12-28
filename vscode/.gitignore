@@ -1,0 +1,7 @@
+webview/
+node_modules/
+__pycache__/
+_test_files/
+.pytest_cache/
+*.vsix
+extension.js

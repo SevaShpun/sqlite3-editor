@@ -1,0 +1,14 @@
+node_modules/
+__pycache__/
+_test_files/
+.vscode/
+.pytest_cache/
+.gitignore
+*.vsix
+*.sh
+*.ps1
+extension.ts
+tsconfig.json
+screenshot.png
+check-changelog.js
+server_test.py

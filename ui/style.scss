@@ -1,0 +1,270 @@
+@use "sass:color";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    /* https://github.com/microsoft/vscode-webview-ui-toolkit/blob/864372518fbb538c281ea5a503e08d3e4b8d0c2e/src/design-tokens.ts */
+    --td-border-color: rgb(230, 230, 230);
+    --td-border-color-hover: rgb(199, 199, 199);
+    --td-border-color-active: rgb(143, 143, 143);
+
+    --page-padding: 5px;
+
+    --gutter-color: #f0f0f0;
+
+    --data-string: rgb(138, 4, 4);
+    --data-string-placeholder: rgba(138, 4, 4, 0.6);
+    --data-number: rgb(0, 128, 0);
+    --data-number-placeholder: rgba(0, 128, 0, 0.6);
+    --data-null: rgb(4, 63, 138);
+    --data-null-placeholder: rgba(4, 63, 138, 0.6);
+    --data-default: rgb(4, 63, 138);
+    --data-default-placeholder: rgba(4, 63, 138, 0.6);
+}
+
+// Matches `class="light"` and `class="vscode-high-contrast vscode-high-contrast-light"`.
+body:not(.dark):not(.vscode-dark):not(.vscode-high-contrast), body.vscode-high-contrast-light {
+    @import "prism";
+}
+
+// Matches `class="dark"`, `class="vscode-dark"`, and `class="vscode-high-contrast"`.
+body.dark, body.vscode-dark, body.vscode-high-contrast:not(.vscode-high-contrast-light) {
+    @import "prism-dark";
+
+    --td-border-color: #{color.invert(rgb(230, 230, 230), 90%)};
+    --td-border-color-hover: #{color.invert(rgb(199, 199, 199), 90%)};
+    --td-border-color-active: #{color.invert(rgb(143, 143, 143), 90%)};
+
+    --page-padding: 5px;
+
+    --gutter-color: #{color.invert(#f0f0f0, 90%)};
+
+    --data-string: #{color.scale(rgb(138, 67, 4), $lightness: 70%)};
+    --data-string-placeholder: #{color.scale(rgba(138, 67, 4, 0.6), $lightness: 70%)};
+    --data-number: #{color.scale(rgb(0, 128, 0), $lightness: 70%)};
+    --data-number-placeholder: #{color.scale(rgba(0, 128, 0, 0.6), $lightness: 70%)};
+    --data-null: #{color.scale(rgb(4, 63, 138), $lightness: 60%)};
+    --data-null-placeholder: #{color.scale(rgba(4, 63, 138, 0.6), $lightness: 60%)};
+    --data-default: #{color.scale(rgb(4, 63, 138), $lightness: 60%)};
+    --data-default-placeholder: #{color.scale(rgba(4, 63, 138, 0.6), $lightness: 60%)};
+}
+
+* {
+    @apply m-0 p-0 box-border;
+}
+
+body {
+    @apply bg-gray-100 text-black h-[100vh] [font-size:12px] overflow-x-hidden select-none;
+    padding: 0 !important; // Override the VSCode's default
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+}
+
+h2 {
+    @apply font-normal mb-[5px];
+    font-size: inherit;
+    padding-left: var(--page-padding);
+    padding-right: var(--page-padding);
+}
+
+li+li {
+    @apply mt-[5px];
+}
+
+select {
+    @apply border-none outline-none cursor-pointer py-[0.15em] bg-secondary text-fg-secondary hover:bg-secondary-hover;
+    font-size: inherit;
+    font-family: inherit;
+
+    &.primary {
+        @apply bg-primary text-fg-primary;
+    }
+
+    &.primary:hover {
+        @apply bg-primary-hover;
+    }
+
+    &:focus {
+        outline: 2px solid rgb(142, 197, 226);
+    }
+}
+
+label:focus {
+    outline: 2px solid rgb(142, 197, 226);
+}
+
+input[type=button]:focus {
+    outline: 2px solid rgb(142, 197, 226);
+}
+
+input:not([type]),
+input[type=text] {
+    @apply border-none outline-none bg-white text-gray-700 pl-[0.5em];
+    font-family: inherit;
+    font-size: inherit;
+
+    &:focus {
+        outline: 2px solid rgb(142, 197, 226);
+    }
+}
+
+textarea {
+    @apply border-none outline-none bg-white text-gray-700 w-full resize-y block [font-family:inherit] [font-size:inherit] pl-[0.5em];
+
+    &:focus {
+        outline: 2px solid rgb(142, 197, 226);
+    }
+}
+
+::placeholder {
+    @apply text-gray-500;
+}
+
+.data-editor-string::placeholder {
+    color: var(--data-string-placeholder);
+    font-style: italic;
+}
+.data-editor-number::placeholder {
+    color: var(--data-number-placeholder);
+    font-style: italic;
+}
+.data-editor-null::placeholder {
+    color: var(--data-null-placeholder);
+    font-style: italic;
+}
+.data-editor-default::placeholder {
+    color: var(--data-default-placeholder);
+    font-style: italic;
+}
+
+.ew-resize,
+.ew-resize * {
+    cursor: ew-resize !important;
+}
+
+.ns-resize,
+.ns-resize * {
+    cursor: ns-resize !important;
+}
+
+table.viewer {
+    /* column */
+    th.clickable:hover {
+        @apply cursor-pointer [background-color:var(--td-border-color-hover)];
+    }
+
+    /* row */
+    td.clickable:nth-child(1):hover:not(.no-hover) {
+        @apply cursor-pointer [background-color:var(--td-border-color-hover)];
+    }
+
+    /* data */
+    td.clickable:hover:not(.editing):not(:nth-child(1)) {
+        @apply cursor-pointer [background-color:rgba(207,255,255,0.371)];
+    }
+
+    td.editing,
+    tr.editing,
+    tr.editing td:nth-child(1),
+    tr.editing td:nth-child(1):hover:not(.no-hover) {
+        @apply cursor-default;
+        background-color: rgba(66, 159, 202, 0.384);
+        outline: 1px solid rgb(142, 197, 226);
+    }
+
+    td.editing {
+        outline: 1px solid rgb(142, 197, 226);
+
+        pre {
+            @apply relative;
+
+            &.cursor-line {
+                animation: cursor-line 1s linear infinite;
+            }
+
+            textarea {
+                @apply absolute p-0 left-0 top-0 w-full h-full;
+
+                &.single-click {
+                    @apply opacity-0 bg-transparent;
+                }
+            }
+        }
+    }
+}
+
+@keyframes cursor-line {
+    0% {
+        box-shadow: -1.5px 0px 0px 0px #6a6a6a;
+    }
+
+    50% {
+        box-shadow: -1.5px 0px 0px 0px #6a6a6a;
+    }
+
+    51% {
+        box-shadow: -1.5px 0px 0px 0px transparent;
+    }
+
+    100% {
+        box-shadow: -1.5px 0px 0px 0px transparent;
+    }
+}
+
+/* codicon */
+body > svg {
+    @apply hidden;
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5);  // use the same color with the dark mode.
+}
+
+.tippy-box {
+    font-size: 10px !important;
+    border-radius: 0 !important;
+    border: 1px solid gray;  // use the same color with the dark mode.
+}
+
+.tippy-content {
+    padding: 1px 4px !important;
+}
+
+.flash {
+    animation: flash forwards 0.4s;
+}
+
+@keyframes flash {
+    from { background: rgba(0, 225, 255, 0.1); }
+    90% { background: rgba(0, 225, 255, 0.1); }
+    to { }
+}
+
+// Example:
+// <div class="contextmenu" hidden>
+//     <button>Insert<kbd>Enter</kbd></button>
+//     <button>Delete<kbd>Delete</kbd></button>
+//     <hr />
+//     <button>Cut<kbd>Ctrl+X</kbd></button>
+//     <button>Copy<kbd>Ctrl+C</kbd></button>
+//     <button>Paste<kbd>Ctrl+V</kbd></button>
+// </div>
+.contextmenu {
+    @apply absolute z-30 left-0 top-0 flex flex-col px-0 py-[0.15rem] outline outline-1 bg-gray-50 outline-gray-300 shadow-lg font-sans;
+    &:not([open]) { @apply hidden; }
+    & > button {
+        @apply text-gray-800 bg-transparent border-none m-0 py-[0.15rem] px-4 text-left text-xs hover:bg-opacity-10 hover:bg-black;
+        &:disabled { @apply text-gray-400; }
+    }
+    & > hr { @apply border-t border-gray-200 mt-[0.15rem] pt-[0.15rem]; }
+    & kbd { @apply font-sans ml-4 float-right text-gray-600; }
+    &::backdrop { @apply bg-transparent; }
+    :focus,:focus-within {
+        @apply outline-none bg-gray-100;
+    }
+}
+
+dialog {
+    @apply text-black;
+}

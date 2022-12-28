@@ -1,0 +1,85 @@
+{
+  "name": "vscode-sqlite3-editor",
+  "displayName": "SQLite3 Editor",
+  "version": "1.0.18",
+  "description": "Edit SQLite3 files like you would in Excel.",
+  "main": "extension.js",
+  "publisher": "yy0931",
+  "repository": {
+    "url": "https://github.com/yy0931/sqlite3-editor",
+    "type": "git"
+  },
+  "bugs": {
+    "url": "https://github.com/yy0931/sqlite3-editor/issues"
+  },
+  "scripts": {
+    "build": "pwsh ./build.ps1 || ./build.sh",
+    "vscode:prepublish": "node ./check-changelog.js && npm run build",
+    "install-extension": "npx vsce package --out out.vsix && code --install-extension ./out.vsix",
+    "test": "python3 -m pytest"
+  },
+  "engines": {
+    "vscode": "^1.71.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCustomEditor:sqlite3-editor.editor"
+  ],
+  "contributes": {
+    "configuration": {
+      "properties": {
+        "sqlite3-editor.pythonPath": {
+          "type": "string",
+          "default": ""
+        }
+      }
+    },
+    "customEditors": [
+      {
+        "viewType": "sqlite3-editor.editor",
+        "displayName": "SQLite3 Editor",
+        "selector": [
+          {
+            "filenamePattern": "*.db"
+          },
+          {
+            "filenamePattern": "*.sqlite"
+          },
+          {
+            "filenamePattern": "*.sqlite3"
+          }
+        ],
+        "priority": "default"
+      }
+    ]
+  },
+  "keywords": [
+    "sqlite",
+    "sqlite3",
+    "editor",
+    "viewer",
+    "table"
+  ],
+  "author": "",
+  "license": "",
+  "capabilities": {
+    "virtualWorkspaces": false,
+    "untrustedWorkspaces": {
+      "supported": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.18",
+    "@types/vscode": "^1.71.0",
+    "@vscode/vsce": "^2.16.0",
+    "esbuild": "^0.15.7"
+  },
+  "dependencies": {
+    "@types/which": "^2.0.1",
+    "msgpackr": "github:yy0931/msgpackr",
+    "tempy": "^3.0.0",
+    "which": "^3.0.0"
+  }
+}

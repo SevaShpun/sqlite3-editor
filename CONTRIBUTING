@@ -1,0 +1,7 @@
+## Running or Installing the Project
+```shell
+npm i
+npm start                       # Starts a development server
+npm test or npm run test:debug  # Tests the project
+npm run install-extension       # Installs the extension
+```
